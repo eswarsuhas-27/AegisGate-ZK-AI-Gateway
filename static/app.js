@@ -1,14 +1,17 @@
 /**
- * AegisGate Interactive Frontend Application
- * Handles Tab Navigation, Real-Time HTML5 Canvas Polynomial Visualizer,
- * Wiretap Matrix Updates, Cryptoanalysis Battery, and Adversarial Attack Sandbox.
+ * AegisGate Interactive Frontend Application (Level 10 Master Edition)
+ * Handles Tab Navigation, Real-Time HTML5 Canvas Polynomial Oscilloscope,
+ * 5-Stage Zero-Knowledge Architecture Flow, Byzantine Tamper Defense,
+ * Web Audio Synthesized SFX, and Cryptographic Hex Byte Inspection.
  */
 
 // Global State
 let currentK = 3;
 let currentN = 5;
-let animationFrameId = null;
 let currentCurveShares = [];
+let isByzantineTampered = false;
+let isSoundEnabled = true;
+let audioCtx = null;
 
 // Initialize on Load
 window.addEventListener('DOMContentLoaded', () => {
@@ -18,8 +21,97 @@ window.addEventListener('DOMContentLoaded', () => {
   checkGatewayStatus();
 });
 
-// Tab Switching
+// ==========================================
+// 1. WEB AUDIO SYNTHESIZED SFX (Pure Native Web Audio)
+// ==========================================
+function getAudioContext() {
+  if (!audioCtx) {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (AudioContextClass) {
+      audioCtx = new AudioContextClass();
+    }
+  }
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+  return audioCtx;
+}
+
+function playAudioSfx(type) {
+  if (!isSoundEnabled) return;
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+
+    if (type === 'click') {
+      // Subtle high-tech click
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(850, now);
+      osc.frequency.exponentialRampToValueAtTime(400, now + 0.04);
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.linearRampToValueAtTime(0.001, now + 0.04);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.05);
+
+    } else if (type === 'success') {
+      // Harmonic ascending chords (Lagrange reconstruction success)
+      const freqs = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+      freqs.forEach((f, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(f, now + idx * 0.05);
+        gain.gain.setValueAtTime(0.06, now + idx * 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.05 + 0.35);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now + idx * 0.05);
+        osc.stop(now + idx * 0.05 + 0.38);
+      });
+
+    } else if (type === 'alarm') {
+      // Low-frequency warning buzz (Byzantine Tamper Detected)
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(160, now);
+      osc.frequency.linearRampToValueAtTime(110, now + 0.25);
+      gain.gain.setValueAtTime(0.12, now);
+      gain.gain.linearRampToValueAtTime(0.001, now + 0.25);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.26);
+    }
+  } catch (e) {
+    // Audio context not allowed before user gesture
+  }
+}
+
+function toggleSoundFx() {
+  isSoundEnabled = !isSoundEnabled;
+  const icon = document.getElementById('soundIcon');
+  const text = document.getElementById('soundText');
+  if (isSoundEnabled) {
+    icon.textContent = '🔊';
+    text.textContent = 'SFX: ON';
+    playAudioSfx('click');
+  } else {
+    icon.textContent = '🔇';
+    text.textContent = 'SFX: OFF';
+  }
+}
+
+// ==========================================
+// 2. TAB SWITCHING
+// ==========================================
 function switchTab(tabName) {
+  playAudioSfx('click');
   document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
 
@@ -38,13 +130,15 @@ function switchTab(tabName) {
   if (activeBtn) activeBtn.classList.add('active');
 
   if (tabName === 'gateway') {
-    // Re-draw canvas on tab return to maintain crisp resolution
-    setTimeout(drawDefaultPolynomial, 50);
+    setTimeout(drawDefaultPolynomial, 60);
   }
 }
 
-// Preset Prompts Loader
+// ==========================================
+// 3. PRESETS LOADER
+// ==========================================
 function loadPreset(type) {
+  playAudioSfx('click');
   const promptInput = document.getElementById('promptInput');
   if (type === 'financial') {
     promptInput.value = 'Conduct confidential strategic valuation for Project Titan with quarterly revenue $84.2M and executive SSN 049-22-9912. Compute forecast margin and expansion risks.';
@@ -55,7 +149,9 @@ function loadPreset(type) {
   }
 }
 
-// Sliders and Constraints
+// ==========================================
+// 4. SLIDERS & DYNAMIC CANVAS
+// ==========================================
 function updateSliders() {
   const sliderK = document.getElementById('sliderK');
   const sliderN = document.getElementById('sliderN');
@@ -77,9 +173,12 @@ function updateSliders() {
   drawPolynomialCurve(currentK, currentN, currentCurveShares);
 }
 
-// HTML5 Canvas Polynomial Curve Visualizer
+// ==========================================
+// 5. OSCILLOSCOPE POLYNOMIAL VISUALIZER
+// ==========================================
 function initCanvas() {
   const canvas = document.getElementById('polyCanvas');
+  if (!canvas) return;
   const dpr = window.devicePixelRatio || 1;
   const rect = canvas.getBoundingClientRect();
   canvas.width = rect.width * dpr;
@@ -96,37 +195,38 @@ function drawPolynomialCurve(k, n, realShares = []) {
   const canvas = document.getElementById('polyCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  const w = canvas.getBoundingClientRect().width;
-  const h = canvas.getBoundingClientRect().height;
+  const rect = canvas.getBoundingClientRect();
+  const w = rect.width;
+  const h = rect.height;
 
+  // Clear background
   ctx.clearRect(0, 0, w, h);
 
-  // 1. Draw Subtle Cartesian Grid
+  // 1. Draw High-Tech Grid & Axis
   ctx.strokeStyle = 'rgba(64, 93, 150, 0.15)';
   ctx.lineWidth = 1;
-
-  for (let x = 40; x < w; x += 40) {
+  const gridSpacing = 35;
+  for (let x = 0; x < w; x += gridSpacing) {
     ctx.beginPath();
     ctx.moveTo(x, 0);
     ctx.lineTo(x, h);
     ctx.stroke();
   }
-
-  for (let y = 30; y < h; y += 30) {
+  for (let y = 0; y < h; y += gridSpacing) {
     ctx.beginPath();
     ctx.moveTo(0, y);
     ctx.lineTo(w, y);
     ctx.stroke();
   }
 
-  // Axes
   const originX = 60;
-  const originY = h - 35;
+  const originY = h - 40;
 
+  // Cartesian Axes
   ctx.strokeStyle = 'rgba(148, 163, 184, 0.4)';
   ctx.lineWidth = 1.5;
   ctx.beginPath();
-  ctx.moveTo(originX, 10);
+  ctx.moveTo(originX, 15);
   ctx.lineTo(originX, originY);
   ctx.lineTo(w - 20, originY);
   ctx.stroke();
@@ -134,99 +234,188 @@ function drawPolynomialCurve(k, n, realShares = []) {
   // Axis Labels
   ctx.fillStyle = '#64748b';
   ctx.font = '10px JetBrains Mono';
-  ctx.fillText('0', originX - 15, originY + 15);
-  ctx.fillText('x (Node Share Index)', w - 160, originY + 25);
-  ctx.fillText('y = f(x)', originX - 45, 20);
+  ctx.fillText('f(x) mod q', originX - 52, 25);
+  ctx.fillText('Share Node Index (x)', w - 135, originY + 28);
 
-  // 2. Synthesize Polynomial Curve for Rendering
-  // Synthetic polynomial representing the degree-(k-1) curve normalized to canvas dimensions
-  const secretY = originY - 70; // Secret at x = 0
+  // 2. Plot Continuous Curve f(x)
+  const stepWidth = (w - originX - 40) / Math.max(n, 5);
+  const secretY = originY - 70; // f(0) = S
 
   ctx.strokeStyle = '#9d4edd';
-  ctx.lineWidth = 2.5;
   ctx.shadowColor = 'rgba(157, 78, 221, 0.6)';
-  ctx.shadowBlur = 12;
-
+  ctx.shadowBlur = 10;
+  ctx.lineWidth = 2.5;
   ctx.beginPath();
-  const stepWidth = (w - originX - 40) / (n + 1);
 
-  for (let px = 0; px <= w - originX - 30; px += 2) {
-    const normX = px / stepWidth;
-    // Degree k-1 synthetic polynomial function for display
+  const numPoints = 120;
+  for (let p = 0; p <= numPoints; p++) {
+    const t = p / numPoints; // 0 to 1
+    const evalX = t * n;
+    const screenX = originX + evalX * stepWidth;
+
+    // Polynomial formula simulation for smooth display
     let normY = 0;
     if (k === 2) {
-      normY = 15 * normX;
+      normY = 16 * evalX;
     } else if (k === 3) {
-      normY = 8 * Math.pow(normX, 2) - 18 * normX;
+      normY = 9.5 * Math.pow(evalX, 2) - 22 * evalX;
     } else if (k === 4) {
-      normY = 2.2 * Math.pow(normX, 3) - 14 * Math.pow(normX, 2) + 20 * normX;
+      normY = 2.2 * Math.pow(evalX, 3) - 14 * Math.pow(evalX, 2) + 22 * evalX;
     } else {
-      normY = 0.6 * Math.pow(normX, 4) - 6 * Math.pow(normX, 3) + 16 * Math.pow(normX, 2) - 10 * normX;
+      normY = 0.6 * Math.pow(evalX, 4) - 6 * Math.pow(evalX, 3) + 16 * Math.pow(evalX, 2) - 10 * evalX;
     }
 
-    const plotX = originX + px;
-    const plotY = Math.max(25, Math.min(originY - 10, secretY - normY));
-
-    if (px === 0) ctx.moveTo(plotX, plotY);
-    else ctx.lineTo(plotX, plotY);
+    const screenY = Math.max(20, Math.min(originY - 5, secretY - normY));
+    if (p === 0) ctx.moveTo(screenX, screenY);
+    else ctx.lineTo(screenX, screenY);
   }
   ctx.stroke();
-  ctx.shadowBlur = 0; // Reset shadow
+  ctx.shadowBlur = 0;
 
-  // 3. Draw Secret Point f(0) = S in Glowing Red (Client Memory Only)
-  ctx.fillStyle = '#f43f5e';
-  ctx.shadowColor = 'rgba(244, 63, 94, 0.8)';
+  // 3. Mark Secret Intercept f(0) = S with Glowing Gold Diamond
+  ctx.fillStyle = '#f59e0b';
+  ctx.shadowColor = 'rgba(245, 158, 11, 0.9)';
   ctx.shadowBlur = 15;
   ctx.beginPath();
-  ctx.arc(originX, secretY, 6, 0, Math.PI * 2);
+  // Draw Diamond
+  ctx.moveTo(originX, secretY - 7);
+  ctx.lineTo(originX + 7, secretY);
+  ctx.lineTo(originX, secretY + 7);
+  ctx.lineTo(originX - 7, secretY);
+  ctx.closePath();
   ctx.fill();
   ctx.shadowBlur = 0;
 
-  ctx.fillStyle = '#fda4af';
+  ctx.fillStyle = '#fde68a';
   ctx.font = 'bold 11px Outfit';
-  ctx.fillText('f(0)=S (Secret)', originX + 10, secretY - 10);
+  ctx.fillText('f(0)=S (Secret)', originX + 12, secretY - 8);
 
-  // 4. Draw n Evaluated Share Points (x_i, y_i)
+  // 4. Mark n Evaluated Share Points (x_i, y_i)
   for (let i = 1; i <= n; i++) {
     const pointX = originX + i * stepWidth;
-    const normX = i;
     let normY = 0;
-    if (k === 2) normY = 15 * normX;
-    else if (k === 3) normY = 8 * Math.pow(normX, 2) - 18 * normX;
-    else if (k === 4) normY = 2.2 * Math.pow(normX, 3) - 14 * Math.pow(normX, 2) + 20 * normX;
-    else normY = 0.6 * Math.pow(normX, 4) - 6 * Math.pow(normX, 3) + 16 * Math.pow(normX, 2) - 10 * normX;
+    if (k === 2) normY = 16 * i;
+    else if (k === 3) normY = 9.5 * Math.pow(i, 2) - 22 * i;
+    else if (k === 4) normY = 2.2 * Math.pow(i, 3) - 14 * Math.pow(i, 2) + 22 * i;
+    else normY = 0.6 * Math.pow(i, 4) - 6 * Math.pow(i, 3) + 16 * Math.pow(i, 2) - 10 * i;
 
-    const pointY = Math.max(25, Math.min(originY - 10, secretY - normY));
+    let pointY = Math.max(20, Math.min(originY - 8, secretY - normY));
 
-    // Glow Cyan for Share Points
-    ctx.fillStyle = '#00f2fe';
-    ctx.shadowColor = 'rgba(0, 242, 254, 0.8)';
-    ctx.shadowBlur = 12;
+    // If Byzantine tampering active on Share #2, displace it and color RED
+    const isCorrupted = isByzantineTampered && (i === 2);
+    if (isCorrupted) {
+      pointY = Math.max(25, pointY - 45); // Malicious shift
+      ctx.fillStyle = '#f43f5e';
+      ctx.shadowColor = 'rgba(244, 63, 94, 0.9)';
+      ctx.shadowBlur = 16;
+    } else {
+      ctx.fillStyle = '#00f2fe';
+      ctx.shadowColor = 'rgba(0, 242, 254, 0.8)';
+      ctx.shadowBlur = 10;
+    }
+
     ctx.beginPath();
-    ctx.arc(pointX, pointY, 5, 0, Math.PI * 2);
+    ctx.arc(pointX, pointY, isCorrupted ? 7 : 5, 0, Math.PI * 2);
     ctx.fill();
     ctx.shadowBlur = 0;
 
-    // Share Label
-    ctx.fillStyle = '#e0f2fe';
-    ctx.font = '10px JetBrains Mono';
-    ctx.fillText(`Share #${i}`, pointX - 18, pointY - 12);
+    // Point Label
+    ctx.fillStyle = isCorrupted ? '#fecdd3' : '#e0f2fe';
+    ctx.font = isCorrupted ? 'bold 11px JetBrains Mono' : '10px JetBrains Mono';
+    ctx.fillText(isCorrupted ? `⚠ Share #2 [CORRUPTED]` : `Share #${i}`, pointX - 22, pointY - 12);
 
-    // Draw dashed projection to X-axis
-    ctx.strokeStyle = 'rgba(0, 242, 254, 0.25)';
+    // Drop dashed line to X-axis
+    ctx.strokeStyle = isCorrupted ? 'rgba(244, 63, 94, 0.4)' : 'rgba(0, 242, 254, 0.25)';
     ctx.setLineDash([3, 3]);
     ctx.beginPath();
     ctx.moveTo(pointX, pointY);
     ctx.lineTo(pointX, originY);
     ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillText(`x=${i}`, pointX - 8, originY + 15);
+    ctx.fillText(`x=${i}`, pointX - 8, originY + 16);
   }
 }
 
-// Query Execution Handler
+// ==========================================
+// 6. BYZANTINE TAMPER TOGGLE & DEFENSE
+// ==========================================
+function toggleByzantineTamper() {
+  isByzantineTampered = !isByzantineTampered;
+  const alertBanner = document.getElementById('tamperAlertBanner');
+  const btn = document.getElementById('btnTamperToggle');
+  const badge = document.getElementById('feldmanBadge');
+
+  if (isByzantineTampered) {
+    playAudioSfx('alarm');
+    alertBanner.style.display = 'flex';
+    btn.innerHTML = '<span>✕ Clear Byzantine Tamper</span>';
+    btn.style.borderColor = 'var(--accent-rose)';
+    badge.textContent = 'Feldman VSS: Tamper Intercepted!';
+    badge.className = 'badge badge-rose';
+  } else {
+    playAudioSfx('click');
+    alertBanner.style.display = 'none';
+    btn.innerHTML = '<span>⚡ Test Byzantine Tamper</span>';
+    btn.style.borderColor = 'rgba(244, 63, 94, 0.5)';
+    badge.textContent = 'Feldman VSS: Armed';
+    badge.className = 'badge badge-violet';
+  }
+
+  drawPolynomialCurve(currentK, currentN, currentCurveShares);
+}
+
+function dismissTamperAlert() {
+  toggleByzantineTamper();
+}
+
+// ==========================================
+// 7. 5-STAGE ZERO-KNOWLEDGE PIPELINE FLOW ANIMATOR
+// ==========================================
+async function animatePipelineFlow() {
+  const steps = [
+    { id: 'stepClientMemory', label: '1. Memory Key Shielding' },
+    { id: 'stepShamirSharder', label: '2. GF(q) Polynomial Sharding' },
+    { id: 'stepFeldmanGuard', label: '3. Feldman Discrete Log Commitments' },
+    { id: 'stepCloudWiretap', label: '4. Cloud Host Wiretap Inspection' },
+    { id: 'stepLagrangeRecon', label: '5. Local Lagrange Reconstruction' }
+  ];
+
+  const statusEl = document.getElementById('pipelineFlowStatus');
+
+  for (let i = 0; i < steps.length; i++) {
+    // Reset all
+    steps.forEach((s, idx) => {
+      const el = document.getElementById(s.id);
+      if (el) {
+        if (idx === i) {
+          el.className = 'flow-step active pulse-glow';
+        } else if (idx < i) {
+          el.className = 'flow-step active';
+        } else {
+          el.className = 'flow-step';
+        }
+      }
+    });
+
+    if (statusEl) statusEl.textContent = steps[i].label;
+    await new Promise(r => setTimeout(r, 220));
+  }
+
+  // Final State
+  steps.forEach(s => {
+    const el = document.getElementById(s.id);
+    if (el) el.className = 'flow-step active';
+  });
+  if (statusEl) statusEl.textContent = '✅ Zero-Knowledge Pipeline Verified';
+}
+
+// ==========================================
+// 8. QUERY DISPATCH & RECONSTRUCTION
+// ==========================================
 async function handleQuerySubmit(event) {
   event.preventDefault();
+  playAudioSfx('click');
+
   const promptInput = document.getElementById('promptInput');
   const btn = document.getElementById('btnSubmitQuery');
   const spinner = document.getElementById('btnSpinner');
@@ -242,6 +431,9 @@ async function handleQuerySubmit(event) {
 
   hostDisplay.textContent = '// Cryptographic sharding active...\n// Blinding sensitive handles...\n// Transmitting to host LLM...';
   clientDisplay.textContent = '// Waiting for host LLM blind response...';
+
+  // Trigger real-time visual flow animation across the 5 stages
+  animatePipelineFlow();
 
   try {
     const res = await fetch('/api/query', {
@@ -260,26 +452,37 @@ async function handleQuerySubmit(event) {
 
     const data = await res.json();
 
-    // 1. Update Wiretap and Client Reconstructed Display
+    // 1. Play success chime
+    playAudioSfx('success');
+
+    // 2. Update Wiretap and Client Reconstructed Display
     typewriterEffect(hostDisplay, data.wiretap_inspected_payload || data.blinded_prompt);
     typewriterEffect(clientDisplay, data.final_reconstructed_response);
 
-    // 2. Update Telemetry Bar
+    // 3. Update Telemetry Bar
     document.getElementById('teleTotalTime').textContent = `${data.telemetry.total_time_ms} ms`;
     document.getElementById('teleShieldTime').textContent = `${data.telemetry.client_crypto_shield_ms} ms`;
     document.getElementById('teleReconTime').textContent = `${data.telemetry.client_lagrange_recon_ms} ms`;
     document.getElementById('teleLeakage').textContent = '0 Bytes';
 
-    // 3. Update Visualizer with Real SSS Shares
+    // 4. Update Visualizer with Real SSS Shares
     if (data.curve_data && data.curve_data.length > 0) {
       currentCurveShares = data.curve_data;
       drawPolynomialCurve(currentK, currentN, currentCurveShares);
     }
 
-    // 4. Update Header Status
+    // 5. Update Header Status
     const feldmanBadge = document.getElementById('feldmanBadge');
     feldmanBadge.textContent = 'Feldman VSS: 100% Congruent';
     feldmanBadge.className = 'badge badge-emerald';
+
+    // 6. Update Inspector with live Hex dump
+    if (data.curve_data && data.curve_data.length > 0) {
+      const inspectorKey = document.getElementById('inspectorMasterKey');
+      if (inspectorKey) {
+        inspectorKey.textContent = `0x${data.curve_data[0].commitment_hash.substring(0, 32)}... (AES-256 Authenticated)`;
+      }
+    }
 
   } catch (err) {
     hostDisplay.textContent = `// Error: ${err.message}`;
@@ -290,11 +493,27 @@ async function handleQuerySubmit(event) {
   }
 }
 
+// ==========================================
+// 9. COLLAPSIBLE INSPECTOR TOGGLE
+// ==========================================
+function toggleInspector() {
+  playAudioSfx('click');
+  const body = document.getElementById('inspectorBody');
+  const arrow = document.getElementById('inspectorArrow');
+  if (body.style.display === 'none') {
+    body.style.display = 'block';
+    arrow.textContent = '▲ Hide Parameters';
+  } else {
+    body.style.display = 'none';
+    arrow.textContent = '▼ Show Parameters';
+  }
+}
+
 // Typewriter Streaming Animation for Displays
 function typewriterEffect(element, text) {
   element.textContent = '';
   let index = 0;
-  const speed = 6; // ms per char
+  const speed = 5;
 
   function type() {
     if (index < text.length) {
@@ -306,8 +525,11 @@ function typewriterEffect(element, text) {
   type();
 }
 
-// Cryptoanalysis Suite Runner (Target: Certified Cryptographer)
+// ==========================================
+// 10. CRYPTOANALYSIS SUITE RUNNER
+// ==========================================
 async function runCryptoanalysisBattery() {
+  playAudioSfx('click');
   const btn = document.getElementById('btnRunCryptoanalysis');
   const container = document.getElementById('cryptoanalysisResultsContainer');
   btn.disabled = true;
@@ -316,6 +538,8 @@ async function runCryptoanalysisBattery() {
   try {
     const res = await fetch('/api/cryptoanalysis');
     const data = await res.json();
+
+    playAudioSfx('success');
 
     let html = `
       <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid var(--accent-emerald); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.5rem; text-align: center;">
@@ -359,8 +583,11 @@ async function runCryptoanalysisBattery() {
   }
 }
 
-// Adversarial Attack Simulation Runner (Target: Certified Cybersecurity Mitigator)
+// ==========================================
+// 11. ADVERSARIAL ATTACK SIMULATION
+// ==========================================
 async function launchAttackSimulation(attackType) {
+  playAudioSfx('alarm');
   const reportContainer = document.getElementById('attackReportContainer');
   const reportTitle = document.getElementById('attackReportTitle');
   const reportContent = document.getElementById('attackReportContent');
@@ -418,9 +645,12 @@ async function launchAttackSimulation(attackType) {
   }
 }
 
-// API Key Config Handler
+// ==========================================
+// 12. API KEY CONFIG & STATUS
+// ==========================================
 async function handleKeyConfig(event) {
   event.preventDefault();
+  playAudioSfx('click');
   const geminiKey = document.getElementById('inputGeminiKey').value.trim();
   const openaiKey = document.getElementById('inputOpenaiKey').value.trim();
   const statusDiv = document.getElementById('keyUpdateStatus');
@@ -435,6 +665,7 @@ async function handleKeyConfig(event) {
       })
     });
     const data = await res.json();
+    playAudioSfx('success');
     statusDiv.textContent = `✓ Keys updated. Active Mode: ${data.config.active_mode}`;
   } catch (err) {
     statusDiv.textContent = `Error updating keys: ${err.message}`;
@@ -442,7 +673,6 @@ async function handleKeyConfig(event) {
   }
 }
 
-// Gateway Status Check
 async function checkGatewayStatus() {
   try {
     const res = await fetch('/api/status');

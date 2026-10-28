@@ -668,3 +668,318 @@ input[type="range"] {
     padding: 1rem;
   }
 }
+
+/* --- LEVEL 10 CYBERSECURITY UPGRADES --- */
+
+/* Sound Toggle Button */
+.sound-toggle-btn {
+  background: rgba(16, 23, 44, 0.8);
+  border: 1px solid rgba(0, 242, 254, 0.3);
+  color: var(--accent-cyan);
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-family: var(--font-code);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: var(--transition);
+}
+
+.sound-toggle-btn:hover {
+  background: rgba(0, 242, 254, 0.15);
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 12px var(--accent-cyan-glow);
+}
+
+/* 5-Stage Architecture Flow Tracker */
+.pipeline-tracker-card {
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  border-color: rgba(0, 242, 254, 0.25);
+  background: linear-gradient(180deg, rgba(16, 23, 44, 0.85) 0%, rgba(7, 9, 19, 0.95) 100%);
+}
+
+.tracker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.9rem;
+}
+
+.tracker-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pipeline-flow-steps {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.flow-step {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.8rem;
+  background: rgba(13, 18, 36, 0.7);
+  border: 1px solid rgba(64, 93, 150, 0.25);
+  border-radius: var(--radius-sm);
+  position: relative;
+  transition: var(--transition);
+}
+
+.flow-step.active {
+  border-color: var(--accent-cyan);
+  background: rgba(0, 242, 254, 0.08);
+  box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+}
+
+.flow-step.pulse-glow {
+  animation: step-pulse 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes step-pulse {
+  from { border-color: var(--accent-cyan); box-shadow: 0 0 8px var(--accent-cyan-glow); }
+  to { border-color: var(--accent-emerald); box-shadow: 0 0 20px var(--accent-emerald-glow); }
+}
+
+.step-num {
+  width: 24px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-family: var(--font-code);
+  flex-shrink: 0;
+}
+
+.flow-step.active .step-num {
+  background: var(--accent-cyan);
+  color: #060813;
+}
+
+.step-content {
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.step-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.step-desc {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.flow-step.active .step-desc {
+  color: var(--accent-cyan);
+}
+
+.step-arrow {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  position: absolute;
+  right: -0.65rem;
+  z-index: 2;
+}
+
+.flow-step:last-child .step-arrow {
+  display: none;
+}
+
+/* Header Action Badges & Tamper Button */
+.header-action-badges {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-tamper-pill {
+  background: rgba(244, 63, 94, 0.15);
+  border: 1px solid rgba(244, 63, 94, 0.5);
+  color: #fda4af;
+  padding: 0.25rem 0.65rem;
+  border-radius: 20px;
+  font-family: var(--font-code);
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: var(--transition);
+}
+
+.btn-tamper-pill:hover {
+  background: rgba(244, 63, 94, 0.3);
+  border-color: var(--accent-rose);
+  box-shadow: 0 0 12px var(--accent-rose-glow);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* Byzantine Tamper Alert Banner */
+.tamper-alert-banner {
+  background: rgba(244, 63, 94, 0.15);
+  border: 1px solid var(--accent-rose);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  animation: tamper-flash 1.2s infinite alternate;
+}
+
+@keyframes tamper-flash {
+  from { box-shadow: 0 0 5px rgba(244, 63, 94, 0.2); border-color: rgba(244, 63, 94, 0.6); }
+  to { box-shadow: 0 0 18px rgba(244, 63, 94, 0.5); border-color: var(--accent-rose); }
+}
+
+.tamper-icon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.tamper-info {
+  font-size: 0.8rem;
+  color: #fecdd3;
+  line-height: 1.4;
+  flex-grow: 1;
+}
+
+.tamper-info strong {
+  color: #fff;
+}
+
+.tamper-info code {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 0.15rem 0.35rem;
+  border-radius: 4px;
+  font-family: var(--font-code);
+  font-size: 0.75rem;
+  color: var(--accent-cyan);
+}
+
+.tamper-dismiss-btn {
+  background: transparent;
+  border: none;
+  color: #fda4af;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  transition: var(--transition);
+}
+
+.tamper-dismiss-btn:hover {
+  color: #fff;
+}
+
+/* Collapsible Cryptographic Inspector */
+.inspector-card {
+  margin-top: 1.5rem;
+  padding: 0;
+  border-color: rgba(157, 78, 221, 0.3);
+  overflow: hidden;
+}
+
+.inspector-toggle {
+  padding: 0.9rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  background: rgba(13, 18, 36, 0.6);
+  transition: var(--transition);
+}
+
+.inspector-toggle:hover {
+  background: rgba(157, 78, 221, 0.12);
+}
+
+.inspector-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #d8b4fe;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.inspector-arrow {
+  font-size: 0.8rem;
+  font-family: var(--font-code);
+  color: var(--text-secondary);
+}
+
+.inspector-body {
+  padding: 1.25rem 1.5rem;
+  background: rgba(7, 9, 19, 0.8);
+  border-top: 1px solid rgba(157, 78, 221, 0.2);
+}
+
+.inspector-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.param-box {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(64, 93, 150, 0.25);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+}
+
+.param-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 0.3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.param-val {
+  font-family: var(--font-code);
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  word-break: break-all;
+  line-height: 1.4;
+}
+
+@media (max-width: 900px) {
+  .pipeline-flow-steps {
+    grid-template-columns: 1fr;
+  }
+  .step-arrow {
+    display: none;
+  }
+  .inspector-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

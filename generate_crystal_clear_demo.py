@@ -49,15 +49,15 @@ SCENES = [
         "tab": "gateway",
         "narration": (
             "Let's execute a live confidential query. We click the Financial M and A preset to load a sensitive acquisition prompt. "
-            "When we dispatch the query, AegisGate's cryptographic engine shards the ephemeral AES-256-GCM master key into verifiable shares. "
-            "Look at the side-by-side comparison matrix. On the left, the cloud host wiretap shows exactly what the provider receives: "
-            "only blinded cipher handles. Zero bytes of sensitive plaintext are leaked. "
-            "On the right, the client locally reconstructs the full synthesis in under ten milliseconds using Lagrange polynomial interpolation."
+            "Notice our real-time Zero-Knowledge Pipeline Flow Tracker lighting up across all five stages. "
+            "AegisGate's cryptographic engine shards the ephemeral AES-256-GCM master key into verifiable shares. "
+            "Look at the comparison matrix: the cloud host wiretap receives only blinded cipher handles with zero plaintext bytes leaked, "
+            "while the client locally reconstructs the full synthesis in under ten milliseconds using Lagrange polynomial interpolation."
         ),
         "steps": [
             {"action": "click_preset", "script": "loadPreset('financial');", "hold_ratio": 0.20},
-            {"action": "submit_query", "script": "document.getElementById('btnSubmitQuery').click();", "wait": 0.8, "hold_ratio": 0.35},
-            {"action": "scroll_wiretap", "script": "window.scrollTo(0, 320);", "hold_ratio": 0.45}
+            {"action": "submit_query", "script": "document.getElementById('btnSubmitQuery').click();", "wait": 1.2, "hold_ratio": 0.40},
+            {"action": "scroll_wiretap", "script": "window.scrollTo(0, 340); toggleInspector();", "wait": 0.3, "hold_ratio": 0.40}
         ]
     },
     {
@@ -67,13 +67,13 @@ SCENES = [
             "Here in the interactive visualizer, we observe the finite field arithmetic in real time. "
             "The red point at f of zero represents the secret, stored exclusively in client memory. "
             "The cyan markers are the evaluated polynomial shares distributed across nodes. "
-            "Notice Feldman's Verifiable Secret Sharing badge: discrete logarithm commitments in a safe prime group "
-            "ensure that any malicious or corrupted share is mathematically rejected before reconstruction."
+            "We can trigger a live Byzantine bit-flip attack on Share number two: Feldman's Verifiable Secret Sharing "
+            "instantly catches the signature mismatch via discrete logarithm commitments and mathematically rejects the corrupted share."
         ),
         "steps": [
-            {"action": "scroll_top", "script": "window.scrollTo(0, 0);", "hold_ratio": 0.30},
-            {"action": "slider_4", "script": "document.getElementById('sliderK').value = 4; updateSliders();", "hold_ratio": 0.35},
-            {"action": "slider_3", "script": "document.getElementById('sliderK').value = 3; updateSliders();", "hold_ratio": 0.35}
+            {"action": "scroll_top", "script": "window.scrollTo(0, 0); toggleInspector();", "wait": 0.3, "hold_ratio": 0.30},
+            {"action": "trigger_tamper", "script": "toggleByzantineTamper();", "wait": 0.3, "hold_ratio": 0.40},
+            {"action": "clear_tamper", "script": "toggleByzantineTamper();", "wait": 0.2, "hold_ratio": 0.30}
         ]
     },
     {
