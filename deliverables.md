@@ -7,15 +7,22 @@
 
 ---
 
-## 🎬 Demonstration Video
+## 🎬 Demonstration Video (with Synchronized Voice-Over Narration)
 
 > **File**: [`demo_video.mp4`](./demo_video.mp4)  
-> **Duration**: ~2 minutes  
-> **Contents**: Full walkthrough of all features — confidential AI pipeline execution, polynomial share visualizer, wiretap matrix, cryptoanalysis battery, adversarial attack sandbox, and formal proofs.
+> **Duration**: 2 minutes 43 seconds (163.2s @ 10 FPS)  
+> **Format**: 1280×720 HD H.264 MP4 | AAC 192k Voice-Over Audio  
+> **Contents**: Complete guided walkthrough with high-clarity voice narration explaining every component:
+> 1. **Introduction & Zero-Knowledge Architecture**: The cleartext cloud leakage problem and AegisGate solution
+> 2. **Confidential AI Pipeline**: Financial M&A query execution, AES-256-GCM + Shamir SSS sharding, live wiretap showing 0 leaked plaintext bytes
+> 3. **Mathematical Visualizer**: Interactive GF(q) polynomial curve, threshold parameters (k=3, n=5), and Feldman VSS commitments
+> 4. **Rigorous Cryptoanalysis Suite**: Shannon perfect secrecy verification, Feldman soundness, and Lagrange invariance
+> 5. **Adversarial Cybersecurity Sandbox**: Prompt injection, host cloud breach, and Byzantine share tampering mitigations
+> 6. **Mathematical Proofs & Architecture Summary**: Formal proofs and hackathon track alignment
 
-To regenerate the video at any time:
+To regenerate the narrated video at any time:
 ```bash
-python generate_demo_video.py
+python generate_narrated_demo.py
 ```
 
 **Video covers the required hackathon demo elements:**
